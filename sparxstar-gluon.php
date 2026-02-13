@@ -251,7 +251,7 @@ final class Sparxstar_Gluon {
 	 * @param bool $network_wide Whether the plugin is being network-activated.
 	 * @return void
 	 */
-	public static function activate( bool $network_wide ): void {
+	public static function gluonActivate( bool $network_wide ): void {
 		// Return if not activation hook
 		if ( current_action() !== 'activate_' . plugin_basename( __FILE__ ) ) {
 			return;
@@ -378,9 +378,9 @@ final class Sparxstar_Gluon {
 	}
 }
 // Hooks and initialization
-register_activation_hook( __FILE__, __NAMESPACE__ . '\GLUON_PLUGIN_activate' );
-register_deactivation_hook( __FILE__, __NAMESPACE__ . '\GLUON_PLUGIN_deactivate' );
-register_uninstall_hook( __FILE__, __NAMESPACE__ . '\GLUON_PLUGIN_uninstall' );
+register_activation_hook( __FILE__, array(__NAMESPACE__ . '\\Sparxstar_Gluon', 'gluonActivate' ));
+register_deactivation_hook( __FILE__, array(__NAMESPACE__ . '\\Sparxstar_Gluon', 'gluonDeactivate' ));
+register_uninstall_hook( __FILE__, array(__NAMESPACE__ . '\\Sparxstar_Gluon', 'gluonUnintstall' ));
 
 /**
  * Initialize the plugin.
