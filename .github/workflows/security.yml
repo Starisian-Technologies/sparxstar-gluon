@@ -108,7 +108,7 @@ jobs:
                   echo "Checking WordPress security best practices..."
 
                   # Check for direct file access protection
-                  if ! grep -q "defined('ABSPATH')" sparxstar-plugin-entry.php; then
+                  if ! grep -q "defined('ABSPATH')" sparxstar-gluon.php; then
                     echo "Warning: Main plugin file should check for ABSPATH"
                   fi
 

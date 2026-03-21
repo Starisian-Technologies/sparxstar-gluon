@@ -1,4 +1,19 @@
 <?php
+/**
+ * SPARXSTAR Gluon Rules and Compliance
+ *
+ * Manages plugin compliance with privacy regulations and WordPress standards.
+ * Integrates with the WordPress Consent API to handle user consent.
+ *
+ * @package    Starisian\Sparxstar\Gluon\Integrations
+ * @subpackage Rules
+ * @since      1.0.0
+ * @author     Starisian Technologies (Max Barrett) <support@starisian.com>
+ * @license    MIT License
+ * @copyright  Copyright 2025-2026 Starisian Technologies.
+ * @version    1.0.0
+ * @link       https://developer.wordpress.org/apis/consent-api/ WordPress Consent API
+ */
 
 declare(strict_types=1);
 
@@ -33,14 +48,37 @@ class SparxstarGluonRules {
 
 
 	/**
+	 * Singleton instance.
+	 *
+	 * @since 1.0.0
+	 * @var SparxstarGluonRules|null
+	 */
+	private static ?SparxstarGluonRules $instance = null;
+
+	/**
 	 * Cookie token identifier for the plugin.
 	 *
 	 * Uses __Host- prefix for enhanced security (requires HTTPS, no domain/path specified).
 	 *
+	 * When renaming this scaffold, update this value to match your plugin's cookie prefix.
+	 *
 	 * @since 1.0.0
 	 * @var string
 	 */
-	private const GLUON_PLUGIN_COOKIE_TOKEN = '__Host-SparxstarGluon-TOKEN';
+	private const SPARXSTAR_GLUON_COOKIE_TOKEN = '__Host-SparxstarGluon-TOKEN';
+
+	/**
+	 * Get singleton instance.
+	 *
+	 * @since 1.0.0
+	 * @return SparxstarGluonRules
+	 */
+	public static function getInstance(): SparxstarGluonRules {
+		if ( null === self::$instance ) {
+			self::$instance = new self();
+		}
+		return self::$instance;
+	}
 
 	/**
 	 * Constructor - Initialize rules and hooks.
@@ -82,9 +120,8 @@ class SparxstarGluonRules {
 	 * @return void
 	 */
 	public function gluonComplyWithRules(): void {
-		$plugin = GLUON_PLUGIN_NAME;
+		$plugin = SPARXSTAR_GLUON_NAME;
 		\add_filter( "wp_consent_api_registered_{$plugin}", '__return_true' );
-		// Implement logic to check if the plugin complies with specific rules.
 	}
 
 	/**
@@ -129,7 +166,7 @@ class SparxstarGluonRules {
 	 */
 	public function gluonUnregisterCookies(): void {
 		if ( \function_exists( 'wp_remove_cookie_info' ) ) {
-			\wp_remove_cookie_info( self::GLUON_PLUGIN_COOKIE_TOKEN );
+			\wp_remove_cookie_info( self::SPARXSTAR_GLUON_COOKIE_TOKEN );
 		}
 	}
 
@@ -162,11 +199,10 @@ class SparxstarGluonRules {
 	 * Get the current consent type.
 	 *
 	 * Returns the site's consent type (opt-in or opt-out).
-	 * Falls back to 'optin' if not set or if function doesn't exist.
+	 * Falls back to false if function doesn't exist.
 	 *
 	 * @since 1.0.0
-	 * @param string $type Optional. The default type to return. Default 'optin'.
-	 * @return string|null The consent type ('optin' or 'optout') or null of no consent type is set.
+	 * @return string|false The consent type ('optin' or 'optout'), or false if not set.
 	 */
 	public function gluonGetUserConsent(): string|false {
 		if ( function_exists( 'wp_get_consent_type' ) ) {
@@ -176,16 +212,30 @@ class SparxstarGluonRules {
 	}
 
 	/**
+	 * Filter callback to set the consent type for this plugin.
+	 *
+	 * Sets the consent mechanism to 'optin', meaning users must actively
+	 * consent before non-essential cookies or tracking is activated.
+	 *
+	 * @since 1.0.0
+	 * @param string $type The current consent type.
+	 * @return string The consent type: 'optin'.
+	 */
+	public function gluonSetConsentType( string $type ): string {
+		return 'optin';
+	}
+
+	/**
 	 * Filter callback to modify consent categories.
 	 *
 	 * Allows customization of which consent categories are available.
 	 * Currently removes the 'preferences' category.
 	 *
 	 * @since 1.0.0
-	 * @param array $consentcategories The available consent categories.
-	 * @return mixed Modified consent categories.
+	 * @param array<string, mixed> $consentcategories The available consent categories.
+	 * @return array<string, mixed> Modified consent categories.
 	 */
-	public function gluonSetConsentCategories( array $consentcategories ): mixed {
+	public function gluonSetConsentCategories( array $consentcategories ): array {
 		unset( $consentcategories['preferences'] );
 		return $consentcategories;
 	}

@@ -1,10 +1,24 @@
 <?php
+/**
+ * SPARXSTAR Gluon Orchestrator
+ *
+ * Main orchestrator class that manages plugin initialization and coordinates
+ * between all plugin components. Implements the Singleton pattern.
+ *
+ * @package    Starisian\Sparxstar\Gluon
+ * @subpackage Core
+ * @since      1.0.0
+ * @author     Starisian Technologies (Max Barrett) <support@starisian.com>
+ * @license    MIT License
+ * @copyright  Copyright 2025-2026 Starisian Technologies.
+ * @version    1.0.0
+ */
 
 declare(strict_types=1);
 
 namespace Starisian\Sparxstar\Gluon;
 
-use Starisian\Sparxstar\helpers\SparxstarGluonLogger as Logger;
+use Starisian\Sparxstar\Gluon\helpers\loggers\SparxstarGluonLogger as Logger;
 use Exception;
 
 // Exit if accessed directly.
@@ -42,7 +56,7 @@ final class SparxstarGluonOrchestrator {
 	 * @since 1.0.0
 	 * @var string
 	 */
-	const VERSION = GLUON_PLUGIN_VERSION;
+	const VERSION = SPARXSTAR_GLUON_VERSION;
 
 	/**
 	 * Singleton instance of the orchestrator.
@@ -88,17 +102,9 @@ final class SparxstarGluonOrchestrator {
 	 * Array of loaded dependencies.
 	 *
 	 * @since 1.0.0
-	 * @var array
+	 * @var array<string, mixed>
 	 */
 	private array $dependencies = array();
-
-	/**
-	 * Core plugin instance.
-	 *
-	 * @since 1.0.0
-	 * @var mixed
-	 */
-	private $core;
 
 	/**
 	 * Get singleton instance of the orchestrator.
@@ -110,7 +116,7 @@ final class SparxstarGluonOrchestrator {
 	 * @return SparxstarGluonOrchestrator The singleton instance.
 	 */
 	public static function gluonGetInstance(): SparxstarGluonOrchestrator {
-		if ( self::$instance === null ) {
+		if ( null === self::$instance ) {
 			self::$instance = new self();
 		}
 		return self::$instance;
@@ -127,18 +133,14 @@ final class SparxstarGluonOrchestrator {
 	 * @internal
 	 */
 	private function __construct() {
-		$this->gluonPath = GLUON_PLUGIN_PATH;
-		$this->gluonUrl  = GLUON_PLUGIN_URL;
-		$this->version   = GLUON_PLUGIN_VERSION;
-		$this->gluonName = GLUON_PLUGIN_NAME;
+		$this->pluginPath = SPARXSTAR_GLUON_PLUGIN_PATH;
+		$this->pluginUrl  = SPARXSTAR_GLUON_PLUGIN_URL;
+		$this->version    = SPARXSTAR_GLUON_VERSION;
+		$this->pluginName = SPARXSTAR_GLUON_NAME;
 
-		// Load textdomain for translations.
 		$this->gluonLoadTextdomain();
-		// Load dependencies.
 		$this->gluonLoadDependencies();
-		// Register WordPress hooks.
 		$this->gluonRegisterHooks();
-		// Register assets.
 		$this->gluonRegisterAssets();
 	}
 
@@ -156,118 +158,128 @@ final class SparxstarGluonOrchestrator {
 	}
 
 	/**
-	 * Initialize plugin functionality
+	 * Initialize plugin functionality.
 	 *
+	 * @since 1.0.0
 	 * @return void
 	 */
 	public function gluonInit(): void {
-		// Plugin initialization logic here
 	}
+
 	/**
-	 * Register plugin js and css assets for enqueing
+	 * Register plugin CSS and JS assets for enqueueing.
 	 *
+	 * @since 1.0.0
 	 * @return void
 	 */
 	private function gluonRegisterAssets(): void {
-		// Register CSS and JS assets here
 	}
+
 	/**
-	 * initializes a dependency.
+	 * Initializes a single dependency by class name.
 	 *
+	 * @since 1.0.0
 	 * @internal
-	 * @param string $dependency
+	 * @param class-string $dependency Fully-qualified class name of the dependency.
 	 * @return void
 	 */
-	private function gluonInitDependencies( string $dependency ): void {
-		// Check if dependency class exists
-		if ( ! class_exists( $dependency::class, false ) ) {
-			Logger::log( 'Starisian Plugin: Dependency class ' . $dependency . ' not found.' );
+	private function gluonInitDependency( string $dependency ): void {
+		if ( ! class_exists( $dependency, false ) ) {
+			Logger::log( 'SPARXSTAR Gluon: Dependency class ' . $dependency . ' not found.' );
 			return;
 		}
-		// Store dependency
-		$this->dependencies[ $dependency::class ] = $dependency;
 		try {
-			// Check if dependency has getInstance method (Singleton pattern)
-			if ( method_exists( $dependency::class, 'pluginGetInstance' ) ) {
-				// Use Singleton pattern to get instance
-				$this->dependencies[ $dependency::class ]::gluonGetInstance();
+			if ( method_exists( $dependency, 'gluonGetInstance' ) ) {
+				$this->dependencies[ $dependency ] = $dependency::gluonGetInstance();
 			} else {
-				// Instantiate dependency normally
-				$this->dependencies[ $dependency::class ] = new $dependency();
+				$this->dependencies[ $dependency ] = new $dependency();
 			}
-		} catch ( \Exception $e ) {
-			Logger::log( 'Starisian Plugin: Failed to instantiate dependency class ' . $dependency . ': ' . $e->getMessage() );
-			return;
+		} catch ( Exception $e ) {
+			Logger::log( 'SPARXSTAR Gluon: Failed to instantiate ' . $dependency . ': ' . $e->getMessage() );
 		}
 	}
+
 	/**
 	 * Loads all plugin dependencies.
 	 *
+	 * @since 1.0.0
 	 * @return void
 	 */
 	private function gluonLoadDependencies(): void {
 		$this->dependencies = array();
 		$dependencies       = array(
-			\Starisian\Sparxstar\core\SparxstarGluonCore::class,
-			\Starisian\Sparxstar\integrations\SparxstarGluonRules::class,
+			\Starisian\Sparxstar\Gluon\core\SparxstarGluonCore::class,
+			\Starisian\Sparxstar\Gluon\integrations\SparxstarGluonRules::class,
 		);
 		foreach ( $dependencies as $dependency ) {
-			$this->gluonInitDependencies( $dependency );
+			$this->gluonInitDependency( $dependency );
 		}
 	}
+
 	/**
 	 * Loads the plugin textdomain for translations.
 	 *
+	 * @since 1.0.0
 	 * @return void
 	 */
 	private function gluonLoadTextdomain(): void {
-		\load_textdomain( 'sparxstar-gluon', false, dirname( \plugin_basename( __FILE__ ) ) . '/languages' );
-	}
-	/**
-	 * Runs the plugin.
-	 *
-	 * @return void
-	 */
-	public function gluonRun(): void {
-		$this->gluonGetInstance();
+		\load_plugin_textdomain(
+			'sparxstar-gluon',
+			false,
+			dirname( \plugin_basename( SPARXSTAR_GLUON_PLUGIN_FILE ) ) . '/languages'
+		);
 	}
 
 	/**
-	 * Prevent cloning of the instance
+	 * Runs the plugin by retrieving or creating the singleton instance.
 	 *
+	 * @since 1.0.0
+	 * @return void
+	 */
+	public static function gluonRun(): void {
+		self::gluonGetInstance();
+	}
+
+	/**
+	 * Prevent cloning of the instance.
+	 *
+	 * @since 1.0.0
 	 * @return void
 	 */
 	private function __clone(): void {
-		_doing_it_wrong( __FUNCTION__, esc_html__( 'Cloning is not allowed.', 'plugin-textdomain' ), self::VERSION );
+		_doing_it_wrong( __FUNCTION__, esc_html__( 'Cloning is not allowed.', 'sparxstar-gluon' ), self::VERSION );
 	}
 
 	/**
-	 * Prevent unserializing of the instance
+	 * Prevent unserializing of the instance.
 	 *
+	 * @since 1.0.0
 	 * @return void
 	 */
 	public function __wakeup(): void {
-		_doing_it_wrong( __FUNCTION__, esc_html__( 'Unserializing is not allowed.', 'plugin-textdomain' ), self::VERSION );
+		_doing_it_wrong( __FUNCTION__, esc_html__( 'Unserializing is not allowed.', 'sparxstar-gluon' ), self::VERSION );
 	}
 
 	/**
-	 * Prevent serialization of the instance
+	 * Prevent serialization of the instance.
 	 *
-	 * @return array
+	 * @since 1.0.0
+	 * @return array<string, mixed>
 	 */
 	public function __sleep(): array {
-		_doing_it_wrong( __FUNCTION__, esc_html__( 'Serialization is not allowed.', 'plugin-textdomain' ), self::VERSION );
+		_doing_it_wrong( __FUNCTION__, esc_html__( 'Serialization is not allowed.', 'sparxstar-gluon' ), self::VERSION );
 		return array();
 	}
 
 	/**
-	 * Prevent calling undefined methods
+	 * Prevent calling undefined methods.
 	 *
-	 * @param string $name Method name
-	 * @param array  $arguments Method arguments
+	 * @since 1.0.0
+	 * @param string       $name      Method name.
+	 * @param array<mixed> $arguments Method arguments.
 	 * @return void
 	 */
 	public function __call( string $name, array $arguments ): void {
-		_doing_it_wrong( __FUNCTION__, esc_html__( 'Calling undefined methods is not allowed.', 'plugin-textdomain' ), self::VERSION );
+		_doing_it_wrong( esc_html( $name ), esc_html__( 'Calling undefined methods is not allowed.', 'sparxstar-gluon' ), self::VERSION );
 	}
 }

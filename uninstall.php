@@ -3,7 +3,7 @@
  * SPARXSTAR Gluon Uninstall Script
  *
  * This file is executed when the plugin is deleted through the WordPress admin.
- * Handles cleanup of plugin data based on the GLUON_PLUGIN_DELETE_ON_UNINSTALL setting.
+ * Handles cleanup of plugin data based on the SPARXSTAR_GLUON_DELETE_ON_UNINSTALL setting.
  * Supports both single-site and multisite WordPress installations.
  *
  * Security: Only runs when called by WordPress uninstall process.
@@ -24,8 +24,8 @@ defined( 'WP_UNINSTALL_PLUGIN' ) || exit;
  *
  * @since 1.0.0
  */
-if ( ! defined( 'GLUON_PLUGIN_DELETE_ON_UNINSTALL' ) ) {
-	define( 'GLUON_PLUGIN_DELETE_ON_UNINSTALL', false );
+if ( ! defined( 'SPARXSTAR_GLUON_DELETE_ON_UNINSTALL' ) ) {
+	define( 'SPARXSTAR_GLUON_DELETE_ON_UNINSTALL', false );
 }
 
 // Access WordPress database
@@ -39,21 +39,33 @@ global $wpdb;
  */
 if ( is_multisite() ) {
 
-	// Get all site IDs in the network
+	/**
+	 * For multisite, iterate all sites using pagination to avoid memory exhaustion
+	 * on very large networks. Batch size of 100 is a safe default.
+	 */
+	$batch_size   = 100;
+	$offset       = 0;
 
-	foreach ( $site_ids as $site_id ) {
-		switch_to_blog( $site_id );
+	do {
+		$sites = get_sites(
+			array(
+				'number' => $batch_size,
+				'offset' => $offset,
+			)
+		);
 
-		// Optional: cleanup logic
-		if ( GLUON_PLUGIN_DELETE_ON_UNINSTALL ) {
-			// Perform cleanup tasks like deleting options, custom tables, etc.
-			delete_option( 'gluon_settings' );
-		} else {
-			// Retain data for potential future use
+		foreach ( $sites as $site ) {
+			switch_to_blog( (int) $site->blog_id );
+
+			if ( SPARXSTAR_GLUON_DELETE_ON_UNINSTALL ) {
+				delete_option( 'sparxstar_gluon_settings' );
+			}
+
+			restore_current_blog();
 		}
 
-		restore_current_blog();
-	}
+		$offset += $batch_size;
+	} while ( count( $sites ) === $batch_size );
 } else {
 
 	/**
@@ -62,11 +74,7 @@ if ( is_multisite() ) {
 	 * For single-site installations, perform cleanup directly.
 	 */
 
-	// Optional: cleanup logic
-	if ( GLUON_PLUGIN_DELETE_ON_UNINSTALL ) {
-		// Perform cleanup tasks like deleting options, custom tables, etc.
-		delete_option( 'gluon_settings' );
-	} else {
-		// Retain data for potential future use
+	if ( SPARXSTAR_GLUON_DELETE_ON_UNINSTALL ) {
+		delete_option( 'sparxstar_gluon_settings' );
 	}
 }
