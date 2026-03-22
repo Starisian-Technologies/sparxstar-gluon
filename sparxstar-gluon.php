@@ -243,12 +243,22 @@ final class SparxstarGluon {
 		}
 
 		if ( is_multisite() && $network_wide ) {
-			$sites = get_sites( array( 'number' => 0 ) );
-			foreach ( $sites as $site ) {
-				switch_to_blog( (int) $site->blog_id );
-				self::gluonActivateSite();
-				restore_current_blog();
-			}
+			$batch_size = 100;
+			$offset     = 0;
+			do {
+				$sites = get_sites(
+					array(
+						'number' => $batch_size,
+						'offset' => $offset,
+					)
+				);
+				foreach ( $sites as $site ) {
+					switch_to_blog( (int) $site->blog_id );
+					self::gluonActivateSite();
+					restore_current_blog();
+				}
+				$offset += $batch_size;
+			} while ( count( $sites ) === $batch_size );
 		} else {
 			self::gluonActivateSite();
 		}
@@ -273,12 +283,22 @@ final class SparxstarGluon {
 		}
 
 		if ( is_multisite() && $network_wide ) {
-			$sites = get_sites( array( 'number' => 0 ) );
-			foreach ( $sites as $site ) {
-				switch_to_blog( (int) $site->blog_id );
-				self::gluonDeactivateSite();
-				restore_current_blog();
-			}
+			$batch_size = 100;
+			$offset     = 0;
+			do {
+				$sites = get_sites(
+					array(
+						'number' => $batch_size,
+						'offset' => $offset,
+					)
+				);
+				foreach ( $sites as $site ) {
+					switch_to_blog( (int) $site->blog_id );
+					self::gluonDeactivateSite();
+					restore_current_blog();
+				}
+				$offset += $batch_size;
+			} while ( count( $sites ) === $batch_size );
 		} else {
 			self::gluonDeactivateSite();
 		}

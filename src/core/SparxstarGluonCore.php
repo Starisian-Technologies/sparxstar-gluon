@@ -16,11 +16,7 @@
 
 declare(strict_types=1);
 
-// In: src/core/PluginCore.php
-
 namespace Starisian\Sparxstar\Gluon\core;
-
-use Starisian\Sparxstar\Gluon\integrations\SparxstarGluonRules;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -81,10 +77,6 @@ final class SparxstarGluonCore {
 	 * @since 1.0.0
 	 */
 	private function __construct() {
-		// Register core plugin hooks, rules, or services here.
-		if ( \class_exists( SparxstarGluonRules::class ) ) {
-			// Rules are instantiated via the Orchestrator
-			SparxstarGluonRules::getInstance();
-		}
+		// Core initialization. Rules are instantiated via the Orchestrator; do not instantiate them here.
 	}
 }

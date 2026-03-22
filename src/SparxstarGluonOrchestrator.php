@@ -184,13 +184,15 @@ final class SparxstarGluonOrchestrator {
 	 * @return void
 	 */
 	private function gluonInitDependency( string $dependency ): void {
-		if ( ! class_exists( $dependency, false ) ) {
+		if ( ! class_exists( $dependency ) ) {
 			Logger::log( 'SPARXSTAR Gluon: Dependency class ' . $dependency . ' not found.' );
 			return;
 		}
 		try {
 			if ( method_exists( $dependency, 'gluonGetInstance' ) ) {
 				$this->dependencies[ $dependency ] = $dependency::gluonGetInstance();
+			} elseif ( method_exists( $dependency, 'getInstance' ) ) {
+				$this->dependencies[ $dependency ] = $dependency::getInstance();
 			} else {
 				$this->dependencies[ $dependency ] = new $dependency();
 			}
