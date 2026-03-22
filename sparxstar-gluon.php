@@ -148,6 +148,17 @@ final class SparxstarGluon {
 
 
 	/**
+	 * Number of sites to process per batch during network-wide activation/deactivation.
+	 *
+	 * Pagination batch size used to iterate all sites on large Multisite networks
+	 * without exhausting PHP memory.
+	 *
+	 * @since 1.0.0
+	 * @var int
+	 */
+	private const MULTISITE_BATCH_SIZE = 100;
+
+	/**
 	 * Constructor - Initialize plugin checks and hooks.
 	 *
 	 * Checks WordPress and PHP version compatibility before initializing
@@ -243,7 +254,7 @@ final class SparxstarGluon {
 		}
 
 		if ( is_multisite() && $network_wide ) {
-			$batch_size = 100;
+			$batch_size = self::MULTISITE_BATCH_SIZE;
 			$offset     = 0;
 			do {
 				$sites = get_sites(
@@ -283,7 +294,7 @@ final class SparxstarGluon {
 		}
 
 		if ( is_multisite() && $network_wide ) {
-			$batch_size = 100;
+			$batch_size = self::MULTISITE_BATCH_SIZE;
 			$offset     = 0;
 			do {
 				$sites = get_sites(

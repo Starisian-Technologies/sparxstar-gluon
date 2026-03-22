@@ -54,7 +54,7 @@ jobs:
 
                   # Update plugin main file version
                   sed -i "s/Version:           [0-9.]\+/Version:           $VERSION/" sparxstar-gluon.php
-                  sed -i "s/@version[[:space:]][0-9.]\+/@version $VERSION/" sparxstar-gluon.php
+                  sed -i "s/@version[[:space:]]\+[0-9.]\+/@version $VERSION/" sparxstar-gluon.php
                   sed -i "s/define( 'SPARXSTAR_GLUON_VERSION', '[0-9.]\+' );/define( 'SPARXSTAR_GLUON_VERSION', '$VERSION' );/" sparxstar-gluon.php
 
                   # Update package.json version
