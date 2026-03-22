@@ -287,7 +287,7 @@ final class SparxstarGluon {
 	/**
 	 * Perform activation tasks for a single site.
 	 *
-	 * Sets up default options and flushes rewrite rules for the site.
+	 * Sets up default options for the site.
 	 * Called during both single-site and multisite activation.
 	 *
 	 * @since 1.0.0
@@ -295,20 +295,19 @@ final class SparxstarGluon {
 	 */
 	public static function gluonActivateSite(): void {
 		add_option( 'sparxstar_gluon_settings', array() );
-		flush_rewrite_rules();
 	}
 
 	/**
 	 * Perform deactivation tasks for a single site.
 	 *
-	 * Flushes rewrite rules. Data is typically retained during deactivation.
+	 * Data is retained during deactivation.
 	 * Called during both single-site and multisite deactivation.
 	 *
 	 * @since 1.0.0
 	 * @return void
 	 */
 	public static function gluonDeactivateSite(): void {
-		flush_rewrite_rules();
+		// No cleanup required on deactivation; data is intentionally retained.
 	}
 
 	/**
