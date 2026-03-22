@@ -104,10 +104,12 @@ class SparxstarGluonRules {
 	private function gluonRegisterHooks(): void {
 		// Register hooks related to plugin rules here.
 		\add_action( 'plugins_loaded', array( $this, 'gluonRegisterCookies' ) );
-		// sets the consent type (optin, optout, default false)
+		// Sets the consent type (optin, optout, default false).
 		\add_filter( 'wp_get_consent_type', array( $this, 'gluonSetConsentType' ), 10, 1 );
-		// Modify consent categories
+		// Modify consent categories.
 		\add_filter( 'wp_get_consent_categories', array( $this, 'gluonSetConsentCategories' ), 10, 1 );
+		// React to consent changes — delete token cookie when functional consent is withdrawn.
+		\add_action( 'wp_set_consent', array( $this, 'gluonHandleConsentChange' ), 10, 2 );
 	}
 
 	/**
@@ -127,11 +129,11 @@ class SparxstarGluonRules {
 	/**
 	 * Register cookies with the WordPress Consent API.
 	 *
-	 * Registers plugin cookies so they can be shown to users on the front-end
+	 * Registers the plugin token cookie so it can be shown to users on the front-end
 	 * via wp_get_cookie_info(). This is required for GDPR compliance.
 	 *
 	 * Cookie is registered with:
-	 * - Token: __Host-SparxstarGluon-TOKEN
+	 * - Token: {@see SPARXSTAR_GLUON_COOKIE_TOKEN}
 	 * - Purpose: Session management / functional
 	 * - Type: functional (required for site operation)
 	 *
@@ -140,11 +142,9 @@ class SparxstarGluonRules {
 	 * @return void
 	 */
 	public function gluonRegisterCookies(): void {
-		// If the Consent API function exists
-		if ( function_exists( 'wp_add_cookie_info' ) ) {
-			// Register the plugin cookie with the Consent API
-			wp_add_cookie_info(
-				'__Host-SparxstarGluon-TOKEN',
+		if ( \function_exists( 'wp_add_cookie_info' ) ) {
+			\wp_add_cookie_info(
+				self::SPARXSTAR_GLUON_COOKIE_TOKEN,
 				'SparxstarGluon',
 				'functional',
 				__( 'Session', 'sparxstar-gluon' ),
@@ -167,6 +167,92 @@ class SparxstarGluonRules {
 	public function gluonUnregisterCookies(): void {
 		if ( \function_exists( 'wp_remove_cookie_info' ) ) {
 			\wp_remove_cookie_info( self::SPARXSTAR_GLUON_COOKIE_TOKEN );
+		}
+	}
+
+	/**
+	 * Set the plugin token cookie, gated on functional consent.
+	 *
+	 * Only writes the cookie when the user has granted functional consent via the
+	 * WordPress Consent API. If consent has not been given the request is silently
+	 * declined and the caller must handle the degraded state.
+	 *
+	 * The cookie uses the __Host- prefix which requires HTTPS, path="/", no Domain
+	 * attribute, and Secure flag — all enforced below.
+	 *
+	 * @since  1.0.0
+	 * @param  string $token_value The token value to store in the cookie.
+	 * @param  int    $expires     Unix timestamp for cookie expiry. 0 = session cookie.
+	 * @return bool   True when the cookie was written, false when consent was denied
+	 *                or headers have already been sent.
+	 */
+	public function gluonSetTokenCookie( string $token_value, int $expires = 0 ): bool {
+		if ( ! $this->gluonIsConsentCategory( 'functional' ) ) {
+			return false;
+		}
+		if ( headers_sent() ) {
+			return false;
+		}
+		return setcookie(
+			self::SPARXSTAR_GLUON_COOKIE_TOKEN,
+			$token_value,
+			array(
+				'expires'  => $expires,
+				'path'     => '/',
+				'domain'   => '',
+				'secure'   => true,
+				'httponly' => true,
+				'samesite' => 'Strict',
+			)
+		);
+	}
+
+	/**
+	 * Delete the plugin token cookie.
+	 *
+	 * Expires the cookie immediately and removes it from the current request's
+	 * $_COOKIE superglobal so callers see the change without a page reload.
+	 * Safe to call even when the cookie is not present.
+	 *
+	 * @since 1.0.0
+	 * @return void
+	 */
+	public function gluonDeleteTokenCookie(): void {
+		if ( ! isset( $_COOKIE[ self::SPARXSTAR_GLUON_COOKIE_TOKEN ] ) ) {
+			return;
+		}
+		if ( ! headers_sent() ) {
+			setcookie(
+				self::SPARXSTAR_GLUON_COOKIE_TOKEN,
+				'',
+				array(
+					'expires'  => time() - HOUR_IN_SECONDS,
+					'path'     => '/',
+					'domain'   => '',
+					'secure'   => true,
+					'httponly' => true,
+					'samesite' => 'Strict',
+				)
+			);
+		}
+		unset( $_COOKIE[ self::SPARXSTAR_GLUON_COOKIE_TOKEN ] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- key lookup only, no value used
+	}
+
+	/**
+	 * React to WordPress Consent API consent changes.
+	 *
+	 * Fires on the `wp_set_consent` action. When functional consent is denied or
+	 * withdrawn the token cookie is immediately deleted so no functional cookie
+	 * persists without the user's agreement.
+	 *
+	 * @since 1.0.0
+	 * @param string $category The consent category that changed (e.g. 'functional').
+	 * @param string $value    The new consent value ('allow' | 'deny').
+	 * @return void
+	 */
+	public function gluonHandleConsentChange( string $category, string $value ): void {
+		if ( 'functional' === $category && 'allow' !== $value ) {
+			$this->gluonDeleteTokenCookie();
 		}
 	}
 
