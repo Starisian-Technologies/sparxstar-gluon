@@ -58,7 +58,7 @@ class SparxstarGluonRules {
 	/**
 	 * Cookie token identifier for the plugin.
 	 *
-	 * Uses __Host- prefix for enhanced security (requires HTTPS, no domain/path specified).
+	 * Uses __Host- prefix for enhanced security (requires HTTPS, Path=/, and no Domain attribute).
 	 *
 	 * When renaming this scaffold, update this value to match your plugin's cookie prefix.
 	 *
