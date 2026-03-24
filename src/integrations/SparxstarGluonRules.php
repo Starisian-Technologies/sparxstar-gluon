@@ -227,7 +227,6 @@ class SparxstarGluonRules {
 				array(
 					'expires'  => time() - HOUR_IN_SECONDS,
 					'path'     => '/',
-					'domain'   => '',
 					'secure'   => true,
 					'httponly' => true,
 					'samesite' => 'Strict',
