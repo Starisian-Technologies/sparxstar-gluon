@@ -316,10 +316,11 @@ final class SparxstarGluon {
 					array(
 						'number' => $batch_size,
 						'offset' => $offset,
+						'fields' => 'ids',
 					)
 				);
-				foreach ( $sites as $site ) {
-					switch_to_blog( (int) $site->blog_id );
+				foreach ( $sites as $site_id ) {
+					switch_to_blog( (int) $site_id );
 					self::gluonDeactivateSite();
 					restore_current_blog();
 				}
