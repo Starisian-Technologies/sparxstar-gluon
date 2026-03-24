@@ -193,6 +193,8 @@ final class SparxstarGluonOrchestrator {
 				$this->dependencies[ $dependency ] = $dependency::gluonGetInstance();
 			} elseif ( method_exists( $dependency, 'getInstance' ) ) {
 				$this->dependencies[ $dependency ] = $dependency::getInstance();
+			} elseif ( method_exists( $dependency, 'getInstance' ) ) {
+				$this->dependencies[ $dependency ] = $dependency::getInstance();
 			} else {
 				$this->dependencies[ $dependency ] = new $dependency();
 			}
