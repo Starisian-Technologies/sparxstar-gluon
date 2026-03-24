@@ -218,17 +218,32 @@ final class SparxstarGluon {
 		$min_wp  = '6.8';
 
 		if ( version_compare( PHP_VERSION, $min_php, '<' ) ) {
-			$this->gluonAdminNotice( 'Plugin requires PHP 8.2+ and WordPress 6.8+. Please update your environment.' );
+			$this->gluonAdminNotice(
+				esc_html__(
+					'SPARXSTAR Gluon requires PHP 8.2+ and WordPress 6.8+. Please update your environment.',
+					'sparxstar-gluon'
+				)
+			);
 			return false;
 		}
 
 		if ( version_compare( get_bloginfo( 'version' ), $min_wp, '<' ) ) {
-			$this->gluonAdminNotice( 'Plugin requires PHP 8.2+ and WordPress 6.8+. Please update your environment.' );
+			$this->gluonAdminNotice(
+				esc_html__(
+					'SPARXSTAR Gluon requires PHP 8.2+ and WordPress 6.8+. Please update your environment.',
+					'sparxstar-gluon'
+				)
+			);
 			return false;
 		}
 
 		if ( ! class_exists( 'WP_Ability' ) ) {
-			$this->gluonAdminNotice( 'Plugin requires the Abilities API plugin to be installed and activated.' );
+			$this->gluonAdminNotice(
+				esc_html__(
+					'SPARXSTAR Gluon requires the Abilities API plugin to be installed and activated.',
+					'sparxstar-gluon'
+				)
+			);
 			return false;
 		}
 

@@ -199,7 +199,6 @@ class SparxstarGluonRules {
 			array(
 				'expires'  => $expires,
 				'path'     => '/',
-				'domain'   => '',
 				'secure'   => true,
 				'httponly' => true,
 				'samesite' => 'Strict',
