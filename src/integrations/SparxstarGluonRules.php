@@ -81,14 +81,15 @@ class SparxstarGluonRules {
 	}
 
 	/**
-	 * Constructor - Initialize rules and hooks.
+	 * Private constructor — enforces Singleton pattern.
 	 *
 	 * Sets up plugin compliance rules and registers necessary WordPress hooks
-	 * for consent management.
+	 * for consent management. Private to prevent direct instantiation;
+	 * use {@see getInstance()} to obtain the shared instance.
 	 *
 	 * @since 1.0.0
 	 */
-	public function __construct() {
+	private function __construct() {
 		$this->gluonComplyWithRules();
 		$this->gluonRegisterHooks();
 	}
