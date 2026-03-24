@@ -51,11 +51,12 @@ if ( is_multisite() ) {
 			array(
 				'number' => $batch_size,
 				'offset' => $offset,
+				'fields' => 'ids',
 			)
 		);
 
-		foreach ( $sites as $site ) {
-			switch_to_blog( (int) $site->blog_id );
+		foreach ( $sites as $site_id ) {
+			switch_to_blog( (int) $site_id );
 
 			if ( SPARXSTAR_GLUON_DELETE_ON_UNINSTALL ) {
 				delete_option( 'sparxstar_gluon_settings' );

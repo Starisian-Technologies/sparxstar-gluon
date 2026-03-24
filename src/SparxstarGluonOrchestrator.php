@@ -193,8 +193,6 @@ final class SparxstarGluonOrchestrator {
 				$this->dependencies[ $dependency ] = $dependency::gluonGetInstance();
 			} elseif ( method_exists( $dependency, 'getInstance' ) ) {
 				$this->dependencies[ $dependency ] = $dependency::getInstance();
-			} elseif ( method_exists( $dependency, 'getInstance' ) ) {
-				$this->dependencies[ $dependency ] = $dependency::getInstance();
 			} else {
 				$this->dependencies[ $dependency ] = new $dependency();
 			}
@@ -242,6 +240,46 @@ final class SparxstarGluonOrchestrator {
 	 */
 	public static function gluonRun(): void {
 		self::gluonGetInstance();
+	}
+
+	/**
+	 * Returns the absolute path to the plugin directory.
+	 *
+	 * @since 1.0.0
+	 * @return string Plugin directory path (trailing slash included).
+	 */
+	public function gluonGetPluginPath(): string {
+		return $this->pluginPath;
+	}
+
+	/**
+	 * Returns the URL to the plugin directory.
+	 *
+	 * @since 1.0.0
+	 * @return string Plugin directory URL (trailing slash included).
+	 */
+	public function gluonGetPluginUrl(): string {
+		return $this->pluginUrl;
+	}
+
+	/**
+	 * Returns the current plugin version string.
+	 *
+	 * @since 1.0.0
+	 * @return string Plugin version (e.g. '1.0.0').
+	 */
+	public function gluonGetVersion(): string {
+		return $this->version;
+	}
+
+	/**
+	 * Returns the plugin display name.
+	 *
+	 * @since 1.0.0
+	 * @return string Plugin name.
+	 */
+	public function gluonGetPluginName(): string {
+		return $this->pluginName;
 	}
 
 	/**
