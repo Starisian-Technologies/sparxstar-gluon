@@ -201,6 +201,20 @@ final class SparxstarGluon {
 		if ( file_exists( $logger_file ) ) {
 			require_once $logger_file;
 			\Starisian\Sparxstar\Gluon\helpers\loggers\SparxstarGluonLogger::gluonAdminNotice( $message, 'error' );
+			return;
+		}
+
+		if ( function_exists( 'add_action' ) ) {
+			add_action(
+				'admin_notices',
+				static function () use ( $message ): void {
+					echo '<div class="notice notice-error"><p>' . esc_html( $message ) . '</p></div>';
+				}
+			);
+		}
+
+		if ( function_exists( 'error_log' ) ) {
+			\error_log( '[SPARXSTAR GLUON] ' . $message );
 		}
 	}
 
