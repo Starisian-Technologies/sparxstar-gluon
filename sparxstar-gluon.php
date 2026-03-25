@@ -233,7 +233,7 @@ final class SparxstarGluon {
 
 		if ( version_compare( PHP_VERSION, $min_php, '<' ) ) {
 			$this->gluonAdminNotice(
-				esc_html__(
+				__(
 					'SPARXSTAR Gluon requires PHP 8.2+ and WordPress 6.8+. Please update your environment.',
 					'sparxstar-gluon'
 				)
@@ -243,7 +243,7 @@ final class SparxstarGluon {
 
 		if ( version_compare( get_bloginfo( 'version' ), $min_wp, '<' ) ) {
 			$this->gluonAdminNotice(
-				esc_html__(
+				__(
 					'SPARXSTAR Gluon requires PHP 8.2+ and WordPress 6.8+. Please update your environment.',
 					'sparxstar-gluon'
 				)
@@ -253,7 +253,7 @@ final class SparxstarGluon {
 
 		if ( ! class_exists( 'WP_Ability' ) ) {
 			$this->gluonAdminNotice(
-				esc_html__(
+				__(
 					'SPARXSTAR Gluon requires the Abilities API plugin to be installed and activated.',
 					'sparxstar-gluon'
 				)

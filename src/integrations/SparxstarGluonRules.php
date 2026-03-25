@@ -313,17 +313,19 @@ class SparxstarGluonRules {
 	}
 
 	/**
-	 * Filter callback to modify consent categories.
+	 * Filter callback to declare this plugin's consent categories.
 	 *
-	 * Allows customization of which consent categories are available.
-	 * Currently removes the 'preferences' category.
+	 * Returns the incoming categories unchanged. This plugin does not remove or
+	 * add global consent categories — category management belongs to the site
+	 * owner (or a dedicated consent/cookie-management plugin). The hook is kept
+	 * so extension code can override this method to add plugin-specific
+	 * categories without touching the Consent API filter directly.
 	 *
 	 * @since 1.0.0
 	 * @param array<string, mixed> $consentcategories The available consent categories.
-	 * @return array<string, mixed> Modified consent categories.
+	 * @return array<string, mixed> Unchanged consent categories.
 	 */
 	public function gluonSetConsentCategories( array $consentcategories ): array {
-		unset( $consentcategories['preferences'] );
 		return $consentcategories;
 	}
 }
