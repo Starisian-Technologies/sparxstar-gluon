@@ -297,17 +297,19 @@ class SparxstarGluonRules {
 	}
 
 	/**
-	 * Filter callback to set the consent type for this plugin.
+	 * Filter callback to provide a default consent type.
 	 *
-	 * Sets the consent mechanism to 'optin', meaning users must actively
-	 * consent before non-essential cookies or tracking is activated.
+	 * Only sets the consent type to 'optin' when no site-wide type has been
+	 * configured yet. If another plugin or the site owner has already set a
+	 * consent type, that value is preserved unchanged — this plugin must not
+	 * override the global consent mechanism.
 	 *
 	 * @since 1.0.0
-	 * @param string $type The current consent type.
-	 * @return string The consent type: 'optin'.
+	 * @param string $type The current consent type set by the site or another plugin.
+	 * @return string The existing consent type, or 'optin' when none is set.
 	 */
 	public function gluonSetConsentType( string $type ): string {
-		return 'optin';
+		return $type ?: 'optin';
 	}
 
 	/**
