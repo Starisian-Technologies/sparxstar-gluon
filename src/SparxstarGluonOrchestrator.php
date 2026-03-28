@@ -322,6 +322,6 @@ final class SparxstarGluonOrchestrator {
 	 * @return void
 	 */
 	public function __call( string $name, array $arguments ): void {
-		_doing_it_wrong( esc_html( $name ), esc_html__( 'Calling undefined methods is not allowed.', 'sparxstar-gluon' ), self::VERSION );
+		_doing_it_wrong( self::class . '::' . $name, esc_html__( 'Calling undefined methods is not allowed.', 'sparxstar-gluon' ), self::VERSION );
 	}
 }
