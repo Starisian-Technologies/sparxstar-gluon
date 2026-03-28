@@ -1,5 +1,5 @@
 {
-    "name": "sparxstar-starter",
+    "name": "sparxstar-gluon",
     "private": true,
     "scripts": {
         "lint": "npm run lint:js && npm run lint:css",
@@ -45,16 +45,16 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/Starisian-Technologies/sparxstar-starter.git"
+        "url": "git+https://github.com/Starisian-Technologies/sparxstar-gluon.git"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "type": "commonjs",
     "bugs": {
-        "url": "https://github.com/Starisian-Technologies/sparxstar-starter/issues"
+        "url": "https://github.com/Starisian-Technologies/sparxstar-gluon/issues"
     },
-    "homepage": "https://github.com/Starisian-Technologies/sparxstar-starter#readme",
+    "homepage": "https://github.com/Starisian-Technologies/sparxstar-gluon#readme",
     "devDependencies": {
         "@eslint/js": "^10.0.1",
         "@playwright/test": "^1.58.2",

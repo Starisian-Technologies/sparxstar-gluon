@@ -22,7 +22,7 @@ Welcome to the SPARXSTAR WordPress Plugin Starter documentation.
 ### 1. Clone and Setup
 
 ```bash
-git clone https://github.com/Starisian-Technologies/sparxstar-starter.git your-plugin-name
+git clone https://github.com/Starisian-Technologies/sparxstar-gluon.git your-plugin-name
 cd your-plugin-name
 composer install
 npm install

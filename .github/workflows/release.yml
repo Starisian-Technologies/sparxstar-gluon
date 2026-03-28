@@ -53,9 +53,9 @@ jobs:
                   VERSION="${{ steps.get_version.outputs.version }}"
 
                   # Update plugin main file version
-                  sed -i "s/Version:           [0-9.]\+/Version:           $VERSION/" sparxstar-plugin-entry.php
-                  sed -i "s/@version [0-9.]\+/@version $VERSION/" sparxstar-plugin-entry.php
-                  sed -i "s/define('GLUON_PLUGIN_VERSION', '[0-9.]\+');/define('GLUON_PLUGIN_VERSION', '$VERSION');/" sparxstar-plugin-entry.php
+                  sed -i "s/Version:           [0-9.]\+/Version:           $VERSION/" sparxstar-gluon.php
+                  sed -i "s/@version[[:space:]]\+[0-9.]\+/@version $VERSION/" sparxstar-gluon.php
+                  sed -i "s/define( 'SPARXSTAR_GLUON_VERSION', '[0-9.]\+' );/define( 'SPARXSTAR_GLUON_VERSION', '$VERSION' );/" sparxstar-gluon.php
 
                   # Update package.json version
                   npm version $VERSION --no-git-tag-version --allow-same-version
@@ -90,7 +90,7 @@ jobs:
                   mkdir -p dist
 
                   # Copy files excluding those in .distignore
-                  rsync -av --exclude-from=.distignore . dist/sparxstar-plugin/
+                  rsync -av --exclude-from=.distignore . dist/sparxstar-gluon/
 
                   echo "✓ Distribution directory created"
 
@@ -100,15 +100,15 @@ jobs:
                   cd dist
 
                   # Create zip file
-                  zip -r sparxstar-plugin.zip sparxstar-plugin/
+                  zip -r sparxstar-gluon.zip sparxstar-gluon/
 
                   # Generate checksums
-                  md5sum sparxstar-plugin.zip > sparxstar-plugin.zip.md5
-                  sha256sum sparxstar-plugin.zip > sparxstar-plugin.zip.sha256
+                  md5sum sparxstar-gluon.zip > sparxstar-gluon.zip.md5
+                  sha256sum sparxstar-gluon.zip > sparxstar-gluon.zip.sha256
 
                   # Save checksums to output
-                  MD5=$(cat sparxstar-plugin.zip.md5 | awk '{print $1}')
-                  SHA256=$(cat sparxstar-plugin.zip.sha256 | awk '{print $1}')
+                  MD5=$(cat sparxstar-gluon.zip.md5 | awk '{print $1}')
+                  SHA256=$(cat sparxstar-gluon.zip.sha256 | awk '{print $1}')
 
                   echo "md5=$MD5" >> $GITHUB_OUTPUT
                   echo "sha256=$SHA256" >> $GITHUB_OUTPUT
@@ -144,9 +144,9 @@ jobs:
               uses: softprops/action-gh-release@v2
               with:
                   files: |
-                      dist/sparxstar-plugin.zip
-                      dist/sparxstar-plugin.zip.md5
-                      dist/sparxstar-plugin.zip.sha256
+                      dist/sparxstar-gluon.zip
+                      dist/sparxstar-gluon.zip.md5
+                      dist/sparxstar-gluon.zip.sha256
                   body_path: /tmp/current_changelog.md
                   draft: false
                   prerelease: ${{ contains(steps.get_version.outputs.version, '-') }}
@@ -157,5 +157,5 @@ jobs:
               uses: actions/upload-artifact@v4
               with:
                   name: plugin-release-${{ steps.get_version.outputs.version }}
-                  path: dist/sparxstar-plugin.zip
+                  path: dist/sparxstar-gluon.zip
                   retention-days: 30
