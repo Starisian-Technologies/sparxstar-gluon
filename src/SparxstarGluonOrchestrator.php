@@ -19,7 +19,6 @@ declare(strict_types=1);
 namespace Starisian\Sparxstar\Gluon;
 
 use Starisian\Sparxstar\Gluon\helpers\loggers\SparxstarGluonLogger as Logger;
-use Exception;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -196,7 +195,7 @@ final class SparxstarGluonOrchestrator {
 			} else {
 				$this->dependencies[ $dependency ] = new $dependency();
 			}
-		} catch ( Exception $e ) {
+		} catch ( \Throwable $e ) {
 			Logger::log( 'SPARXSTAR Gluon: Failed to instantiate ' . $dependency . ': ' . $e->getMessage() );
 		}
 	}
