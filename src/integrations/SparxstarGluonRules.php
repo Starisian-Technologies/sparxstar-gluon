@@ -103,8 +103,9 @@ class SparxstarGluonRules {
 	 * @return void
 	 */
 	private function gluonRegisterHooks(): void {
-		// Register hooks related to plugin rules here.
-		\add_action( 'plugins_loaded', array( $this, 'gluonRegisterCookies' ) );
+		// Register cookies on 'init': this class is instantiated during plugins_loaded,
+		// so re-hooking into plugins_loaded at the same priority would be too late.
+		\add_action( 'init', array( $this, 'gluonRegisterCookies' ) );
 		// Sets the consent type (optin, optout, default false).
 		\add_filter( 'wp_get_consent_type', array( $this, 'gluonSetConsentType' ), 10, 1 );
 		// Modify consent categories.
