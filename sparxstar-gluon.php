@@ -214,7 +214,7 @@ final class SparxstarGluon {
 		}
 
 		if ( function_exists( 'error_log' ) ) {
-			\error_log( '[SPARXSTAR GLUON] ' . $message );
+			\error_log( '[SPARXSTAR GLUON] ' . $message ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Last-resort logging when SparxstarGluonLogger is unavailable.
 		}
 	}
 
