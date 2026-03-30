@@ -31,6 +31,11 @@ if ( ! defined( 'SPARXSTAR_GLUON_DELETE_ON_UNINSTALL' ) ) {
 // Access WordPress database
 global $wpdb;
 
+// Nothing to clean up when delete-on-uninstall is disabled.
+if ( ! SPARXSTAR_GLUON_DELETE_ON_UNINSTALL ) {
+	return;
+}
+
 /**
  * Handle Multisite Uninstall
  *
@@ -43,8 +48,8 @@ if ( is_multisite() ) {
 	 * For multisite, iterate all sites using pagination to avoid memory exhaustion
 	 * on very large networks. Batch size of 100 is a safe default.
 	 */
-	$batch_size   = 100;
-	$offset       = 0;
+	$batch_size = 100;
+	$offset     = 0;
 
 	do {
 		$sites = get_sites(
@@ -57,11 +62,7 @@ if ( is_multisite() ) {
 
 		foreach ( $sites as $site_id ) {
 			switch_to_blog( (int) $site_id );
-
-			if ( SPARXSTAR_GLUON_DELETE_ON_UNINSTALL ) {
-				delete_option( 'sparxstar_gluon_settings' );
-			}
-
+			delete_option( 'sparxstar_gluon_settings' );
 			restore_current_blog();
 		}
 
@@ -74,8 +75,5 @@ if ( is_multisite() ) {
 	 *
 	 * For single-site installations, perform cleanup directly.
 	 */
-
-	if ( SPARXSTAR_GLUON_DELETE_ON_UNINSTALL ) {
-		delete_option( 'sparxstar_gluon_settings' );
-	}
+	delete_option( 'sparxstar_gluon_settings' );
 }
