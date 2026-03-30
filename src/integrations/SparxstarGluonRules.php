@@ -183,7 +183,8 @@ class SparxstarGluonRules {
 	 * attribute, and Secure flag — all enforced below.
 	 *
 	 * @since  1.0.0
-	 * @param  string $token_value The token value to store in the cookie.
+	 * @param  string $token_value The token value to store in the cookie. Will be
+	 *                             rawurlencode()'d to guarantee RFC 6265 compliance.
 	 * @param  int    $expires     Unix timestamp for cookie expiry. 0 = session cookie.
 	 * @return bool   True when the cookie was written, false when consent was denied
 	 *                or headers have already been sent.
@@ -197,7 +198,7 @@ class SparxstarGluonRules {
 		}
 		return setcookie(
 			self::SPARXSTAR_GLUON_COOKIE_TOKEN,
-			$token_value,
+			rawurlencode( $token_value ),
 			array(
 				'expires'  => $expires,
 				'path'     => '/',
