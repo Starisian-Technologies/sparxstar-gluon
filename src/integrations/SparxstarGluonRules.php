@@ -306,11 +306,15 @@ class SparxstarGluonRules {
 	 * override the global consent mechanism.
 	 *
 	 * @since 1.0.0
-	 * @param string $type The current consent type set by the site or another plugin.
+	 * @param string|false $type The current consent type set by the site or another plugin.
 	 * @return string The existing consent type, or 'optin' when none is set.
 	 */
-	public function gluonSetConsentType( string $type ): string {
-		return $type ?: 'optin';
+	public function gluonSetConsentType( string|false $type ): string {
+		if ( false === $type || '' === $type ) {
+			return 'optin';
+		}
+
+		return $type;
 	}
 
 	/**
