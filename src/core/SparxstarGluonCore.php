@@ -1,9 +1,22 @@
 <?php
-// In: src/core/PluginCore.php
+/**
+ * SPARXSTAR Gluon Core
+ *
+ * Handles the core functionality for the plugin. Serves as the central
+ * point for core plugin operations and business logic.
+ *
+ * @package    Starisian\Sparxstar\Gluon\Core
+ * @subpackage Core
+ * @since      1.0.0
+ * @author     Starisian Technologies (Max Barrett) <support@starisian.com>
+ * @license    MIT License
+ * @copyright  Copyright 2025-2026 Starisian Technologies.
+ * @version    1.0.0
+ */
+
+declare(strict_types=1);
 
 namespace Starisian\Sparxstar\Gluon\core;
-
-use Starisian\Sparxstar\Gluon\integrations\SparxstarGluonRules;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -64,10 +77,6 @@ final class SparxstarGluonCore {
 	 * @since 1.0.0
 	 */
 	private function __construct() {
-		// Register core plugin hooks, rules, or services here.
-		if ( \class_exists( '\\Starisian\\Sparxstar\\integrations\\SparxstarGluonRules' ) ) {
-			// Rules are instantiated via the Orchestrator
-			SparxstarGluonRules::getInstance();
-		}
+		// Core initialization. Rules are instantiated via the Orchestrator; do not instantiate them here.
 	}
 }
