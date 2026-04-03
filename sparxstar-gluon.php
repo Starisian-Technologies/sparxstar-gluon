@@ -1,42 +1,22 @@
 <?php
-
-namespace Starisian\Sparxstar;
-
-use function PHPUnit\Framework\assertFalse;
 /**
- * Copyright (c) 2026 Starisian Technologies (Max Barrett)
+ * SPARXSTAR Gluon
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ * A WordPress plugin scaffold for strategic value and AI-driven functionality.
+ * Use as a template for building robust, production-grade plugins.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * When using this scaffold, replace all occurrences of "Gluon", "gluon",
+ * "GLUON", and "sparxstar-gluon" with your plugin's name. See README.md for
+ * a full renaming checklist.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-/**
- * Sparxstar Gluon
- *
- * A WordPress plugin scaffold for strategic value and AI-driven functionality. Use as a template for building robust plugins.
- *
- * @package           Starisian\Sparxstar
+ * @package           Starisian\Sparxstar\Gluon
  * @author            Starisian Technologies (Max Barrett) <support@starisian.com>
  * @license           MIT License
  * @copyright         Copyright 2025-2026 Starisian Technologies.
  * @version           1.0.0
  *
  * @wordpress-plugin
- * Plugin Name:        SPARXSTAR GLUON
+ * Plugin Name:       SPARXSTAR GLUON
  * Plugin URI:        https://starisian.com/sparxstar/sparxstar-gluon
  * Description:       A WordPress plugin scaffold for strategic value and AI-driven functionality. Use as a template for building robust plugins.
  * Version:           1.0.0
@@ -44,16 +24,20 @@ use function PHPUnit\Framework\assertFalse;
  * Author URI:        https://www.starisian.com/
  * Contributor:       Max Barrett
  * License:           MIT License
- * License URI:       https://github.com/starisian-technologies/sparxstar-gluon/blob/main/LICENSE.md
+ * License URI:       https://github.com/Starisian-Technologies/sparxstar-gluon/blob/main/LICENSE.md
  * Text Domain:       sparxstar-gluon
  * Requires at least: 6.8
  * Requires PHP:      8.2
  * Tested up to:      6.9
  * Domain Path:       /languages
  * Tags:              strategic, privacy, starter, template, sparxstar, WordPress, plugin, multisite, ai, artificial intelligence, gluon
- * GitHub Plugin URI: https://github.com/starisian-technologies/sparxstar-gluon
+ * GitHub Plugin URI: https://github.com/Starisian-Technologies/sparxstar-gluon
  * Requires Plugins:  abilities-api, mcp-adapter
  */
+
+declare(strict_types=1);
+
+namespace Starisian\Sparxstar\Gluon;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -65,8 +49,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 1.0.0
  * @var string
  */
-if ( ! defined( 'GLUON_PLUGIN_PATH' ) ) {
-	define( 'GLUON_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
+if ( ! defined( 'SPARXSTAR_GLUON_PLUGIN_PATH' ) ) {
+	define( 'SPARXSTAR_GLUON_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 }
 
 /**
@@ -75,8 +59,8 @@ if ( ! defined( 'GLUON_PLUGIN_PATH' ) ) {
  * @since 1.0.0
  * @var string
  */
-if ( ! defined( 'GLUON_PLUGIN_URL' ) ) {
-	define( 'GLUON_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+if ( ! defined( 'SPARXSTAR_GLUON_PLUGIN_URL' ) ) {
+	define( 'SPARXSTAR_GLUON_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 }
 
 /**
@@ -85,8 +69,8 @@ if ( ! defined( 'GLUON_PLUGIN_URL' ) ) {
  * @since 1.0.0
  * @var string
  */
-if ( ! defined( 'GLUON_PLUGIN_VERSION' ) ) {
-	define( 'GLUON_PLUGIN_VERSION', '1.0.0' );
+if ( ! defined( 'SPARXSTAR_GLUON_VERSION' ) ) {
+	define( 'SPARXSTAR_GLUON_VERSION', '1.0.0' );
 }
 
 /**
@@ -95,8 +79,8 @@ if ( ! defined( 'GLUON_PLUGIN_VERSION' ) ) {
  * @since 1.0.0
  * @var string
  */
-if ( ! defined( 'GLUON_PLUGIN_NAMESPACE' ) ) {
-	define( 'GLUON_PLUGIN_NAMESPACE', 'Starisian\\Sparxsatar\\Gluon\\' );
+if ( ! defined( 'SPARXSTAR_GLUON_NAMESPACE' ) ) {
+	define( 'SPARXSTAR_GLUON_NAMESPACE', 'Starisian\\Sparxstar\\Gluon\\' );
 }
 
 /**
@@ -105,8 +89,21 @@ if ( ! defined( 'GLUON_PLUGIN_NAMESPACE' ) ) {
  * @since 1.0.0
  * @var string
  */
-if ( ! defined( 'GLUON_PLUGIN_NAME' ) ) {
-	define( 'GLUON_PLUGIN_NAME', 'SPARXSTAR-Gluon' );
+if ( ! defined( 'SPARXSTAR_GLUON_NAME' ) ) {
+	define( 'SPARXSTAR_GLUON_NAME', 'SPARXSTAR-Gluon' );
+}
+
+/**
+ * Plugin main file path constant.
+ *
+ * Used for textdomain loading and other file-relative operations.
+ * Update when renaming this scaffold.
+ *
+ * @since 1.0.0
+ * @var string
+ */
+if ( ! defined( 'SPARXSTAR_GLUON_PLUGIN_FILE' ) ) {
+	define( 'SPARXSTAR_GLUON_PLUGIN_FILE', __FILE__ );
 }
 
 /**
@@ -117,14 +114,14 @@ if ( ! defined( 'GLUON_PLUGIN_NAME' ) ) {
  * @since 1.0.0
  * @var bool
  */
-if ( ! defined( 'GLUON_PLUGIN_DELETE_ON_UNINSTALL' ) ) {
-	define( 'GLUON_PLUGIN_DELETE_ON_UNINSTALL', false );
+if ( ! defined( 'SPARXSTAR_GLUON_DELETE_ON_UNINSTALL' ) ) {
+	define( 'SPARXSTAR_GLUON_DELETE_ON_UNINSTALL', false );
 }
 
-use Starisian\src\includes\Autoloader;
+use Starisian\Sparxstar\Gluon\includes\Autoloader;
 
-if ( dirname( GLUON_PLUGIN_PATH ) && file_exists( GLUON_PLUGIN_PATH . 'src/includes/Autoloader.php' ) ) {
-	require_once GLUON_PLUGIN_PATH . 'src/includes/Autoloader.php';
+if ( file_exists( SPARXSTAR_GLUON_PLUGIN_PATH . 'src/includes/Autoloader.php' ) ) {
+	require_once SPARXSTAR_GLUON_PLUGIN_PATH . 'src/includes/Autoloader.php';
 	Autoloader::register();
 } else {
 	add_action(
@@ -142,13 +139,24 @@ if ( dirname( GLUON_PLUGIN_PATH ) && file_exists( GLUON_PLUGIN_PATH . 'src/inclu
  * Handles plugin initialization, compatibility checks, and activation/deactivation hooks.
  * This is the entry point for the plugin and manages the plugin lifecycle.
  *
- * @package    Starisian\Sparxstar
+ * @package    Starisian\Sparxstar\Gluon
  * @subpackage Bootstrap
  * @since      1.0.0
  * @final
  */
-final class Sparxstar_Gluon {
+final class SparxstarGluon {
 
+
+	/**
+	 * Number of sites to process per batch during network-wide activation/deactivation.
+	 *
+	 * Pagination batch size used to iterate all sites on large Multisite networks
+	 * without exhausting PHP memory.
+	 *
+	 * @since 1.0.0
+	 * @var int
+	 */
+	private const MULTISITE_BATCH_SIZE = 100;
 
 	/**
 	 * Constructor - Initialize plugin checks and hooks.
@@ -159,12 +167,9 @@ final class Sparxstar_Gluon {
 	 * @since 1.0.0
 	 */
 	public function __construct() {
-		// Check compatibility.
 		if ( ! $this->gluonIsPluginCompatible() ) {
-			// If not compatible, return.
 			return;
 		}
-		// register the run method on plugins_loaded.
 		$this->gluonRegisterHooks();
 	}
 
@@ -178,9 +183,7 @@ final class Sparxstar_Gluon {
 	 * @return void
 	 */
 	public function gluonRegisterHooks(): void {
-		// Register hooks here
-		// Run the plugin on plugins_loaded
-		add_action( 'plugins_loaded', array( 'Starisian\Sparxstar\Gluon\SparxstarGluonOrchestrator', 'gluonRun' ) );
+		add_action( 'plugins_loaded', array( SparxstarGluonOrchestrator::class, 'gluonRun' ) );
 	}
 
 	/**
@@ -190,17 +193,29 @@ final class Sparxstar_Gluon {
 	 * requirements (PHP/WordPress versions) are not met.
 	 *
 	 * @since 1.0.0
+	 * @param string $message The message to display.
 	 * @return void
 	 */
 	private function gluonAdminNotice( string $message ): void {
-		// Load logger class
-		$logger = GLUON_PLUGIN_PATH . 'src/helpers/loggers/SparxstarGluonLogger.php';
-		// Include logger if exists
-		if ( file_exists( $logger ) ) {
-			require_once $logger;
+		$logger_file = SPARXSTAR_GLUON_PLUGIN_PATH . 'src/helpers/loggers/SparxstarGluonLogger.php';
+		if ( file_exists( $logger_file ) ) {
+			require_once $logger_file;
+			\Starisian\Sparxstar\Gluon\helpers\loggers\SparxstarGluonLogger::gluonAdminNotice( $message, 'error' );
+			return;
 		}
-		// Log admin notice
-		$logger::gluonAdminNotice( __( $message, 'sparxstar-gluon' ), 'error' );
+
+		if ( function_exists( 'add_action' ) ) {
+			add_action(
+				'admin_notices',
+				static function () use ( $message ): void {
+					echo '<div class="notice notice-error"><p>' . esc_html( $message ) . '</p></div>';
+				}
+			);
+		}
+
+		if ( function_exists( 'error_log' ) ) {
+			\error_log( '[SPARXSTAR GLUON] ' . $message ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Last-resort logging when SparxstarGluonLogger is unavailable.
+		}
 	}
 
 	/**
@@ -213,31 +228,39 @@ final class Sparxstar_Gluon {
 	 * @return bool True if compatible, false otherwise.
 	 */
 	private function gluonIsPluginCompatible(): bool {
-		// Define minimum requirements
-		// Adjust as needed
-		// PHP minimum version
-		$min_php = 8.2;
-		// WordPress minimum version
-		$min_wp = 6.8;
-		// get PHP version
-		$php_version = PHP_VERSION;
-		// get WordPress version
-		$wp_version = get_bloginfo( 'version' );
-		// If either version is less than minimum
-		if (
-			( version_compare( $php_version, $min_php, '<' ) === true )
-			|| ( version_compare( $wp_version, $min_wp, '<' ) === true )
-		) {
-			// Show admin notice
-			$this->gluonAdminNotice( __( 'Plugin requires PHP 8.2+ and WordPress 6.8+. Please update your environment.', 'sparxstar-gluon' ) );
-			// Return false for incompatible
+		$min_php = '8.2';
+		$min_wp  = '6.8';
+
+		if ( version_compare( PHP_VERSION, $min_php, '<' ) ) {
+			$this->gluonAdminNotice(
+				__(
+					'SPARXSTAR Gluon requires PHP 8.2+ and WordPress 6.8+. Please update your environment.',
+					'sparxstar-gluon'
+				)
+			);
 			return false;
 		}
+
+		if ( version_compare( get_bloginfo( 'version' ), $min_wp, '<' ) ) {
+			$this->gluonAdminNotice(
+				__(
+					'SPARXSTAR Gluon requires PHP 8.2+ and WordPress 6.8+. Please update your environment.',
+					'sparxstar-gluon'
+				)
+			);
+			return false;
+		}
+
 		if ( ! class_exists( 'WP_Ability' ) ) {
-			// E.g. add an admin notice about the missing dependency.
-			$this->gluonAdminNotice( __( 'Plugin requires the Abilities API plugin to be installed and activated.', 'sparxstar-gluon' ) );
+			$this->gluonAdminNotice(
+				__(
+					'SPARXSTAR Gluon requires the Abilities API plugin to be installed and activated.',
+					'sparxstar-gluon'
+				)
+			);
 			return false;
 		}
+
 		return true;
 	}
 
@@ -252,32 +275,32 @@ final class Sparxstar_Gluon {
 	 * @return void
 	 */
 	public static function gluonActivate( bool $network_wide ): void {
-		// Return if not activation hook
 		if ( current_action() !== 'activate_' . plugin_basename( __FILE__ ) ) {
 			return;
 		}
-		// Return if user lacks permissions
-		if ( current_user_can( 'activate_plugins' ) === false ) {
+		if ( ! current_user_can( 'activate_plugins' ) ) {
 			return;
 		}
-		global $wpdb;
-		// Activation tasks
-		// if multi-site, activate for all sites.
-		if ( is_multisite() && $network_wide === true ) {
-			// Get all site IDs
-			$site_ids = $wpdb->get_col( "SELECT blog_id FROM {$wpdb->blogs}" );
-			// Loop through each site and activate
-			foreach ( $site_ids as $site_id ) {
-				// Switch to the site
-				switch_to_blog( (int) $site_id );
-				// Call site-specific activation
-				self::gluonActivateSite();
-				// Restore to the current site
-				restore_current_blog();
-			}
-			// Single site activation
+
+		if ( is_multisite() && $network_wide ) {
+			$batch_size = self::MULTISITE_BATCH_SIZE;
+			$offset     = 0;
+			do {
+				$sites = get_sites(
+					array(
+						'number' => $batch_size,
+						'offset' => $offset,
+						'fields' => 'ids',
+					)
+				);
+				foreach ( $sites as $site_id ) {
+					switch_to_blog( (int) $site_id );
+					self::gluonActivateSite();
+					restore_current_blog();
+				}
+				$offset += $batch_size;
+			} while ( count( $sites ) === $batch_size );
 		} else {
-			// Call site-specific activation
 			self::gluonActivateSite();
 		}
 	}
@@ -292,33 +315,33 @@ final class Sparxstar_Gluon {
 	 * @param bool $network_wide Whether the plugin is being network-deactivated.
 	 * @return void
 	 */
-	public function gluonDeactivate( bool $network_wide ): void {
-		// Return if not deactivation hook
+	public static function gluonDeactivate( bool $network_wide ): void {
 		if ( current_action() !== 'deactivate_' . plugin_basename( __FILE__ ) ) {
 			return;
 		}
-		// Return if user lacks permissions
-		if ( current_user_can( 'activate_plugins' ) === false ) {
+		if ( ! current_user_can( 'activate_plugins' ) ) {
 			return;
 		}
-		global $wpdb;
-		// Deactivation tasks
-		// if multi-site, deactivate for all sites.
-		if ( is_multisite() && $network_wide === true ) {
-			// Get all site IDs
-			$site_ids = $wpdb->get_col( "SELECT blog_id FROM {$wpdb->blogs}" );
-			// Loop through each site and deactivate
-			foreach ( $site_ids as $site_id ) {
-				// Switch to the site
-				switch_to_blog( (int) $site_id );
-				// Call site-specific deactivation
-				self::gluonDeactivateSite();
-				// Restore to the current site
-				restore_current_blog();
-			}
-			// Single site deactivation
+
+		if ( is_multisite() && $network_wide ) {
+			$batch_size = self::MULTISITE_BATCH_SIZE;
+			$offset     = 0;
+			do {
+				$sites = get_sites(
+					array(
+						'number' => $batch_size,
+						'offset' => $offset,
+						'fields' => 'ids',
+					)
+				);
+				foreach ( $sites as $site_id ) {
+					switch_to_blog( (int) $site_id );
+					self::gluonDeactivateSite();
+					restore_current_blog();
+				}
+				$offset += $batch_size;
+			} while ( count( $sites ) === $batch_size );
 		} else {
-			// Call site-specific deactivation
 			self::gluonDeactivateSite();
 		}
 	}
@@ -326,32 +349,27 @@ final class Sparxstar_Gluon {
 	/**
 	 * Perform activation tasks for a single site.
 	 *
-	 * Sets up default options and flushes rewrite rules for the site.
+	 * Sets up default options for the site.
 	 * Called during both single-site and multisite activation.
 	 *
 	 * @since 1.0.0
 	 * @return void
 	 */
-	public function gluonActivateSite(): void {
-		// Activation tasks per site
-		add_option( 'gluon_settings', array() );
-		// Add other default settings or database tables as needed
-		flush_rewrite_rules();
+	public static function gluonActivateSite(): void {
+		add_option( 'sparxstar_gluon_settings', array() );
 	}
 
 	/**
 	 * Perform deactivation tasks for a single site.
 	 *
-	 * Flushes rewrite rules. Data is typically retained during deactivation.
+	 * Data is retained during deactivation.
 	 * Called during both single-site and multisite deactivation.
 	 *
 	 * @since 1.0.0
 	 * @return void
 	 */
-	public function gluonDeactivateSite(): void {
-		// Deactivation tasks per site
-		// Usually nothing removed here
-		flush_rewrite_rules();
+	public static function gluonDeactivateSite(): void {
+		// No cleanup required on deactivation; data is intentionally retained.
 	}
 
 	/**
@@ -363,37 +381,31 @@ final class Sparxstar_Gluon {
 	 * @since 1.0.0
 	 * @return void
 	 */
-	public function gluonUninstall(): void {
-		// Uninstallation tasks
-		if ( ( WP_UNINSTALL_PLUGIN !== __FILE__ ) || ( current_user_can( 'delete_plugins' ) === false ) ) {
-			// if not called from uninstall.php, return
+	public static function gluonUninstall(): void {
+		if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) || ! current_user_can( 'delete_plugins' ) ) {
 			return;
 		}
-		// Uninstall tasks script here or load from uninstall.php
-		$uninstall = GLUON_PLUGIN_PATH . 'uninstall.php';
+		$uninstall = SPARXSTAR_GLUON_PLUGIN_PATH . 'uninstall.php';
 		if ( file_exists( $uninstall ) ) {
-			// Include uninstall script to remove all data
 			require_once $uninstall;
 		}
 	}
 }
-// Hooks and initialization
-register_activation_hook( __FILE__, array(__NAMESPACE__ . '\\Sparxstar_Gluon', 'gluonActivate' ));
-register_deactivation_hook( __FILE__, array(__NAMESPACE__ . '\\Sparxstar_Gluon', 'gluonDeactivate' ));
-register_uninstall_hook( __FILE__, array(__NAMESPACE__ . '\\Sparxstar_Gluon', 'gluonUnintstall' ));
+
+register_activation_hook( __FILE__, array( SparxstarGluon::class, 'gluonActivate' ) );
+register_deactivation_hook( __FILE__, array( SparxstarGluon::class, 'gluonDeactivate' ) );
+register_uninstall_hook( __FILE__, array( SparxstarGluon::class, 'gluonUninstall' ) );
 
 /**
  * Initialize the plugin.
  *
  * Instantiates the main plugin bootstrap class to start the plugin.
- * This function is called immediately to begin plugin execution.
  *
  * @since 1.0.0
  * @return void
  */
 function sparxstar_gluon_init(): void {
-	// Instantiate the main plugin class
-	new Sparxstar_Gluon();
+	new SparxstarGluon();
 }
-// Run the initialization function
+
 sparxstar_gluon_init();
