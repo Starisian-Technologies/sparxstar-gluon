@@ -1,4 +1,21 @@
 <?php
+/**
+ * PSR-4 Compatible Autoloader
+ *
+ * Provides automatic class loading following the PSR-4 autoloading standard.
+ * Enables object-oriented plugin development without requiring Composer in production.
+ *
+ * @package    Starisian\Sparxstar\Gluon\Includes
+ * @subpackage Core
+ * @since      1.0.0
+ * @author     Starisian Technologies (Max Barrett) <support@starisian.com>
+ * @license    MIT License
+ * @copyright  Copyright 2025-2026 Starisian Technologies.
+ * @version    1.0.0
+ */
+
+declare(strict_types=1);
+
 namespace Starisian\Sparxstar\Gluon\includes;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -12,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * This autoloader enables object-oriented plugin development without requiring Composer.
  *
  * The autoloader expects:
- * - Classes to be within the namespace defined by GLUON_PLUGIN_NAMESPACE constant
+ * - Classes to be within the namespace defined by SPARXSTAR_GLUON_NAMESPACE constant
  * - Class files to be located in the /src/ directory
  * - File structure to match the namespace structure
  * - One class per file, with the filename matching the class name
@@ -76,15 +93,15 @@ class Autoloader {
 	 */
 	public static function loadClass( string $className ): void {
 		// Ensure required constants are defined
-		if ( ! defined( 'GLUON_PLUGIN_NAMESPACE' ) || ! defined( 'GLUON_PLUGIN_PATH' ) ) {
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG || wp_get_environment_type() !== 'production' ) {
-				error_log( 'Autoloader error: GLUON_PLUGIN_NAMESPACE or GLUON_PLUGIN_PATH is not defined.' );
+		if ( ! defined( 'SPARXSTAR_GLUON_NAMESPACE' ) || ! defined( 'SPARXSTAR_GLUON_PLUGIN_PATH' ) ) {
+			if ( ( defined( 'WP_DEBUG' ) && WP_DEBUG ) || \wp_get_environment_type() !== 'production' ) {
+				error_log( 'Autoloader error: SPARXSTAR_GLUON_NAMESPACE or SPARXSTAR_GLUON_PLUGIN_PATH is not defined.' ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 			}
 			return;
 		}
 
-		$baseNamespace = GLUON_PLUGIN_NAMESPACE;
-		$baseDir       = GLUON_PLUGIN_PATH . 'src/';
+		$baseNamespace = SPARXSTAR_GLUON_NAMESPACE;
+		$baseDir       = SPARXSTAR_GLUON_PLUGIN_PATH . 'src/';
 
 		$len = strlen( $baseNamespace );
 		if ( strncmp( $className, $baseNamespace, $len ) !== 0 ) {
@@ -96,8 +113,8 @@ class Autoloader {
 
 		if ( file_exists( $file ) ) {
 			require_once $file;
-		} elseif ( defined( 'WP_DEBUG' ) && WP_DEBUG || wp_get_environment_type() !== 'production' ) {
-			error_log( "Autoloader: Class file not found for {$className} at {$file}" );
+		} elseif ( ( defined( 'WP_DEBUG' ) && WP_DEBUG ) || \wp_get_environment_type() !== 'production' ) {
+			error_log( "Autoloader: Class file not found for {$className} at {$file}" ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 		}
 	}
 }

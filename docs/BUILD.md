@@ -24,8 +24,8 @@ This document explains how to build, develop, and maintain this WordPress plugin
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/Starisian-Technologies/sparxstar-starter.git
-cd sparxstar-starter
+git clone https://github.com/Starisian-Technologies/sparxstar-gluon.git
+cd sparxstar-gluon
 ```
 
 2. Install PHP dependencies:

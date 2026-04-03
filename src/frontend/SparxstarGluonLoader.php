@@ -1,4 +1,19 @@
 <?php
+/**
+ * SPARXSTAR Gluon Template Shortcode Loader
+ *
+ * Provides functionality to register WordPress shortcodes that render PHP templates.
+ * Allows creation of reusable template components embeddable anywhere shortcodes work.
+ *
+ * @package    Starisian\Sparxstar\Gluon\Frontend
+ * @subpackage Shortcodes
+ * @since      1.0.0
+ * @author     Starisian Technologies (Max Barrett) <support@starisian.com>
+ * @license    MIT License
+ * @copyright  Copyright 2025-2026 Starisian Technologies.
+ * @version    1.0.0
+ */
+
 declare(strict_types=1);
 namespace Starisian\Sparxstar\Gluon\frontend;
 
@@ -21,9 +36,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Example Usage:
  * ```php
- * $shortcode = new TemplateShortcode(
+ * $shortcode = new SparxstarGluonLoader(
  *     'my_template',
- *     GLUON_PLUGIN_PATH . 'src/templates/my-template.php'
+ *     SPARXSTAR_GLUON_PLUGIN_PATH . 'src/templates/my-template.php'
  * );
  * // Use in content: [my_template title="My Title"]
  * ```
@@ -77,7 +92,7 @@ class SparxstarGluonLoader {
 	 */
 	private function gluonRegisterHooks(): void {
 		// Register the shortcode with WordPress
-		\add_shortcode( $this->tag, array( $this, 'pluginRenderShortcode' ) );
+		\add_shortcode( $this->tag, array( $this, 'gluonRenderShortcode' ) );
 	}
 
 	/**
