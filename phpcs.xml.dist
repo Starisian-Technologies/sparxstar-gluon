@@ -55,6 +55,7 @@
       <property name="prefixes" type="array">
         <element value="starisian"/>
         <element value="sparxstar"/>
+        <element value="spx"/>
       </property>
     </properties>
   </rule>
@@ -67,14 +68,17 @@
     <exclude-pattern>src/*</exclude-pattern>
   </rule>
 
-  <!-- Exclude method name validation for PSR-4 classes -->
+  <!-- Exclude method name validation for PSR-4 namespaced classes -->
   <rule ref="WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid">
     <exclude-pattern>src/*</exclude-pattern>
+    <exclude-pattern>sparxstar-gluon.php</exclude-pattern>
+    <exclude-pattern>uninstall.php</exclude-pattern>
   </rule>
 
   <!-- Exclude variable name validation for PSR-4 classes -->
   <rule ref="WordPress.NamingConventions.ValidVariableName">
     <exclude-pattern>src/*</exclude-pattern>
+    <exclude-pattern>sparxstar-gluon.php</exclude-pattern>
   </rule>
 
   <!-- Allow inline comments without punctuation in src/ -->

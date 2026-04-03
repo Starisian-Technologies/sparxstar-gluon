@@ -1,4 +1,21 @@
 <?php
+/**
+ * SPARXSTAR Gluon Logger
+ *
+ * Provides logging and debugging functionality for the plugin. Outputs log messages
+ * to the WordPress debug log when WP_DEBUG is enabled.
+ *
+ * @package    Starisian\Sparxstar\Gluon\Helpers\Loggers
+ * @subpackage Utilities
+ * @since      1.0.0
+ * @author     Starisian Technologies (Max Barrett) <support@starisian.com>
+ * @license    MIT License
+ * @copyright  Copyright 2025-2026 Starisian Technologies.
+ * @version    1.0.0
+ */
+
+declare(strict_types=1);
+
 namespace Starisian\Sparxstar\Gluon\helpers\loggers;
 
 // Exit if accessed directly.
@@ -38,7 +55,7 @@ class SparxstarGluonLogger {
 	 * @since 1.0.0
 	 * @var string
 	 */
-	private static string $pluginName = GLUON_PLUGIN_NAME;
+	private static string $pluginName = SPARXSTAR_GLUON_NAME;
 
 	/**
 	 * Constructor - Logs initialization message.
@@ -103,7 +120,7 @@ class SparxstarGluonLogger {
 			function () use ( $message, $type ) {
 				printf(
 					'<div class="%1$s"><p>%2$s</p></div>',
-					\esc_attr( $type === 'error' ? 'notice notice-error' : 'notice notice-success' ),
+					\esc_attr( 'error' === $type ? 'notice notice-error' : 'notice notice-success' ),
 					\esc_html( $message )
 				);
 			}

@@ -54,7 +54,7 @@ follow Starisian Technologies coding conventions and SPARXSTAR deployment standa
 1. **Clone and Install**
 
 ```bash
-git clone https://github.com/Starisian-Technologies/sparxstar-starter.git your-plugin-name
+git clone https://github.com/Starisian-Technologies/sparxstar-gluon.git your-plugin-name
 cd your-plugin-name
 composer install
 npm install
@@ -77,6 +77,30 @@ npm test
 
 - Copy plugin to WordPress plugins directory
 - Activate through WordPress admin
+
+## Renaming This Scaffold
+
+Gluon is a **named scaffold** — when building a real plugin, replace all scaffold
+identifiers with your plugin's name. Run through these steps after cloning:
+
+| Find (case-sensitive) | Replace with |
+| --------------------- | ------------ |
+| `sparxstar-gluon` | `your-plugin-slug` |
+| `SparxstarGluon` | `YourPluginName` |
+| `SPARXSTAR_GLUON` | `YOUR_PLUGIN` |
+| `sparxstar_gluon` | `your_plugin` |
+| `Gluon` | `YourPlugin` |
+| `gluon` | `yourplugin` |
+| `SPARXSTAR GLUON` | `YOUR PLUGIN NAME` |
+
+**Files to rename:**
+
+- `sparxstar-gluon.php` → `your-plugin-slug.php`
+- `src/SparxstarGluonOrchestrator.php` → `src/YourPluginNameOrchestrator.php`
+- All files under `src/` that contain `SparxstarGluon` in their name
+
+Update the plugin header fields (`Plugin Name`, `Text Domain`, `Plugin URI`, etc.)
+and the `composer.json` `name` field to match your plugin's identity.
 
 ## Documentation
 
@@ -260,8 +284,8 @@ SPARXSTAR™ and Starisian Technologies™ are trademarks of Starisian Technolog
 ## Support
 
 - 📖 [Documentation](docs/)
-- 🐛 [Issue Tracker](https://github.com/Starisian-Technologies/sparxstar-starter/issues)
-- 💬 [Discussions](https://github.com/Starisian-Technologies/sparxstar-starter/discussions)
+- 🐛 [Issue Tracker](https://github.com/Starisian-Technologies/sparxstar-gluon/issues)
+- 💬 [Discussions](https://github.com/Starisian-Technologies/sparxstar-gluon/discussions)
 - 📧 Email: support@starisian.com
 
 ## Contributing

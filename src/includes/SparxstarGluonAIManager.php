@@ -203,7 +203,7 @@ class SparxstarGluonAIManager {
 	 * @param McpAdapter $adapter The MCP adapter instance used to create the server.
 	 * @return void
 	 */
-	public function sparx_sky_register_mcp_server( McpAdapter $adapter ): void {
+	public function gluonRegisterMcpServer( McpAdapter $adapter ): void {
 		$adapter->create_server(
 			'sky-server',                      // ID
 			'sparxstar-sky',                   // Namespace
