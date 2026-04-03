@@ -71,6 +71,6 @@
         "puppeteer": "^24.37.5",
         "stylelint": "^17.5.0",
         "stylelint-config-standard": "^40.0.0",
-        "terser": "^5.39.2"
+        "terser": "^5.46.1"
     }
 }
